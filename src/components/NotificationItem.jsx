@@ -1,3 +1,14 @@
+// NotificationItem component renders a single notification row with input and action buttons
+// Props:
+// - value: string, notification text
+// - disabled: boolean, disables input editing
+// - onChange: function, called when input value changes
+// - onInfo: function, called when Info button is clicked
+// - onSend: function, called when Send button is clicked
+// - onEdit: function, called when Edit button is clicked
+// - onDelete: function, called when Delete button is clicked
+// - isBold: boolean, makes input text bold
+// Usage: <NotificationItem value={...} onChange={...} ... />
 import { Info, Edit, Trash2 } from "lucide-react";
 
 const NotificationItem = ({

@@ -1,9 +1,11 @@
 // ConfirmationCard component displays a confirmation dialog with customizable message and actions
 // Props:
-// - message: string to display in the dialog
-// - confirmText: text for the confirm button
-// - cancelText: text for the cancel button
-// Usage: <ConfirmationCard message="..." confirmText="..." cancelText="..." />
+// - message: string, message to display in the dialog
+// - confirmText: string, text for the confirm button
+// - cancelText: string, text for the cancel button
+// - onConfirm: function, called when confirm button is clicked
+// - onCancel: function, called when cancel button is clicked
+// Usage: <ConfirmationCard message="..." confirmText="..." cancelText="..." onConfirm={...} onCancel={...} />
 
 const ConfirmationCard = ({
   message,

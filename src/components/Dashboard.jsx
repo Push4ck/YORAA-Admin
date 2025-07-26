@@ -1,1 +1,1 @@
-// This file is now deprecated. Please use src/layout/Layout.jsx for the main layout.
+// Dashboard.jsx is deprecated. Use src/layout/Layout.jsx for main dashboard layout.

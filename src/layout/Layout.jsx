@@ -1,3 +1,8 @@
+// Layout component provides the main dashboard structure with navbar, sidebar, and fixed-width content area
+// Usage: Wrap your routes/pages with <Layout> for consistent UI
+// - Navbar/Header at the top
+// - Sidebar below navbar
+// - Main content area uses React Router Outlet for dynamic page rendering
 import { Outlet } from "react-router-dom";
 import sidebarItems from "../data/sidebarItems";
 

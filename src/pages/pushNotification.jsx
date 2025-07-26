@@ -6,7 +6,13 @@ import NotificationItem from "../components/NotificationItem";
 import EditNotificationModal from "../components/EditNotificationModal";
 
 // PushNotification page for sending and managing notifications
-// PushNotification page for sending and managing notifications
+// Features:
+// - Compose notification text and deeplink
+// - Select target platforms (multi-select)
+// - Upload and preview notification image (with localStorage persistence)
+// - Stack notification section with editable rows and popups
+// - Uses NotificationItem and EditNotificationModal for modular UI
+// Usage: Access via dashboard sidebar navigation
 const PushNotification = () => {
   // State for notification text
   const [notificationText, setNotificationText] = useState("");

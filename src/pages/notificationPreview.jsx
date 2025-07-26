@@ -1,5 +1,7 @@
+// NotificationPreview page displays the uploaded notification image in full view
+// Uses React Router location state to receive image data
+// Usage: Navigate to this page with image in location.state
 import { useLocation, useNavigate } from "react-router-dom";
-// import Dashboard from "../components/Dashboard";
 import { ArrowLeft } from "lucide-react";
 
 // NotificationPreview page to show the uploaded image in full view
