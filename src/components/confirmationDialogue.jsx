@@ -1,11 +1,15 @@
-// ConfirmationCard component displays a confirmation dialog with customizable message and actions
-// Props:
-// - message: string, message to display in the dialog
-// - confirmText: string, text for the confirm button
-// - cancelText: string, text for the cancel button
-// - onConfirm: function, called when confirm button is clicked
-// - onCancel: function, called when cancel button is clicked
-// Usage: <ConfirmationCard message="..." confirmText="..." cancelText="..." onConfirm={...} onCancel={...} />
+/* ConfirmationCard component displays a confirmation dialog with customizable message and actions
+Props:
+- message: string, message to display in the dialog
+- confirmText: string, text for the confirm button
+- cancelText: string, text for the cancel button
+- onConfirm: function, called when confirm button is clicked
+- onCancel: function, called when cancel button is clicked
+- type: string, "confirmation" (default) or "success" for different layouts
+- onDone: function, called when done button is clicked (for success type)
+Usage: 
+- Confirmation: <ConfirmationCard message="..." confirmText="..." cancelText="..." onConfirm={...} onCancel={...} />
+- Success: <ConfirmationCard type="success" message="..." onDone={...} /> */
 
 const ConfirmationCard = ({
   message,
@@ -13,13 +17,40 @@ const ConfirmationCard = ({
   cancelText,
   onConfirm,
   onCancel,
+  type = "confirmation",
+  onDone,
 }) => {
   // Default message if none provided
-  const displayMessage = message || "Are you sure you want to proceed?";
+  const displayMessage =
+    message ||
+    (type === "success"
+      ? "Operation completed successfully!"
+      : "Are you sure you want to proceed?");
   // Default button texts
   const confirmLabel = confirmText || "Yes";
   const cancelLabel = cancelText || "Cancel";
 
+  // Success type layout
+  if (type === "success") {
+    return (
+      <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-lg flex justify-center items-center flex-col">
+        {/* Success message */}
+        <p className="text-gray-900 text-lg font-medium text-center mb-8 leading-relaxed">
+          {displayMessage}
+        </p>
+
+        {/* Done button */}
+        <button
+          className="w-full bg-black text-white py-3 px-6 rounded-full font-medium hover:bg-gray-800 transition-colors cursor-pointer"
+          onClick={onDone}
+        >
+          Done
+        </button>
+      </div>
+    );
+  }
+
+  // Default confirmation type layout
   return (
     <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-lg flex justify-center items-center flex-col">
       {/* Confirmation message */}

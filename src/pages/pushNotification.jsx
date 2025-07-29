@@ -1,29 +1,33 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, Mail, Edit, Trash2, Info, Menu, X } from "lucide-react";
+import { Upload, Mail, Info } from "lucide-react";
 import ConfirmationDialogue from "../components/confirmationDialogue";
 import NotificationItem from "../components/NotificationItem";
 import EditNotificationModal from "../components/EditNotificationModal";
 
-// PushNotification page for sending and managing notifications
-// Features:
-// - Compose notification text and deeplink
-// - Select target platforms (multi-select)
-// - Upload and preview notification image (with localStorage persistence)
-// - Stack notification section with editable rows and popups
-// - Uses NotificationItem and EditNotificationModal for modular UI
-// Usage: Access via dashboard sidebar navigation
+/* PushNotification page for sending and managing notifications
+Features:
+- Compose notification text and deeplink
+- Select target platforms (multi-select)
+- Upload and preview notification image (with localStorage persistence)
+- Stack notification section with editable rows and popups
+- Uses NotificationItem and EditNotificationModal for modular UI
+Usage: Access via dashboard sidebar navigation */
 const PushNotification = () => {
   // State for notification text
   const [notificationText, setNotificationText] = useState("");
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   // State for deeplink
-  const [deeplink, setDeeplink] = useState("eg yoraa/product/123");
+  const [deeplink, setDeeplink] = useState("");
   // State for target platform, allow multi-select
   const [platformOptions] = useState([
     { label: "Android", value: "android" },
     { label: "ios", value: "ios" },
   ]);
-  const [selectedPlatforms, setSelectedPlatforms] = useState(["android"]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState([
+    "android",
+    "ios",
+  ]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // State for uploaded image, initialize from localStorage
   const [image, setImage] = useState(() => {
@@ -52,19 +56,55 @@ const PushNotification = () => {
     }
   }, [image]);
 
+  // Example stacked notifications
+  const [stackedNotifications, setStackedNotifications] = useState(() => {
+    try {
+      const saved = localStorage.getItem("stackedNotifications");
+      return saved
+        ? JSON.parse(saved)
+        : [
+            {
+              text: "Manage account and services linked to your Yoraa account",
+            },
+            {
+              text: "Manage account and services linked to your Yoraa account",
+            },
+            {
+              text: "Manage account and services linked to your Yoraa account",
+            },
+            {
+              text: "Manage account and services linked to your Yoraa account",
+            },
+          ];
+    } catch {
+      return [
+        { text: "Manage account and services linked to your Yoraa account" },
+        { text: "Manage account and services linked to your Yoraa account" },
+        { text: "Manage account and services linked to your Yoraa account" },
+        { text: "Manage account and services linked to your Yoraa account" },
+      ];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "stackedNotifications",
+        JSON.stringify(stackedNotifications)
+      );
+    } catch (error) {
+      console.debug(
+        "Failed to save stackedNotifications to localStorage:",
+        error
+      );
+    }
+  }, [stackedNotifications]);
+
   // Reference for file input element
   const fileInputRef = useRef(null);
 
   // Navigation hook
   const navigate = useNavigate();
-
-  // Example stacked notifications
-  const [stackedNotifications, setStackedNotifications] = useState([
-    { text: "Manage account and services linked to your Yoraa account" },
-    { text: "Manage account and services linked to your Yoraa account" },
-    { text: "Manage account and services linked to your Yoraa account" },
-    { text: "Manage account and services linked to your Yoraa account" },
-  ]);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
@@ -88,7 +128,7 @@ const PushNotification = () => {
               value={notificationText}
               onChange={(e) => setNotificationText(e.target.value)}
               placeholder="Type Here"
-              className="w-3xl h-24 sm:h-32 border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:border-black"
+              className="w-158 h-24 sm:h-32 border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:border-black"
             />
           </div>
 
@@ -117,7 +157,7 @@ const PushNotification = () => {
             />
             <button
               type="button"
-              className="flex items-center gap-2 bg-blue-500 text-white px-3 sm:px-4 py-2 rounded-lg text-sm hover:bg-blue-600"
+              className="flex items-center gap-2 bg-blue-500 text-white px-3 sm:px-4 py-2 rounded-lg text-sm hover:bg-blue-600 cursor-pointer"
               onClick={() =>
                 fileInputRef.current && fileInputRef.current.click()
               }
@@ -170,7 +210,7 @@ const PushNotification = () => {
                 : selectedPlatforms.length === 1
                 ? platformOptions.find(
                     (opt) => opt.value === selectedPlatforms[0]
-                  )?.label
+                  )?.label || selectedPlatforms[0]
                 : "choose target platform"}
             </button>
             {dropdownOpen && (
@@ -225,10 +265,36 @@ const PushNotification = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8">
-            <button className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 border border-slate-300 rounded-full">
+            <button
+              className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 border border-slate-300 rounded-full cursor-pointer"
+              onClick={() => {
+                if (notificationText.trim()) {
+                  const newNotification = { text: notificationText.trim() };
+                  setStackedNotifications([
+                    ...stackedNotifications,
+                    newNotification,
+                  ]);
+                  setNotificationText(""); // Reset the text area
+                }
+              }}
+            >
               save for later
             </button>
-            <button className="bg-black text-white px-6 sm:px-8 py-2 rounded-full text-sm hover:bg-gray-800">
+            <button
+              className="bg-black text-white px-6 sm:px-8 py-2 rounded-full text-sm hover:bg-gray-800 cursor-pointer"
+              onClick={() => {
+                if (notificationText.trim()) {
+                  navigate("/notification-details", {
+                    state: {
+                      message: notificationText,
+                      deeplink: deeplink,
+                      platforms: selectedPlatforms,
+                      image: image,
+                    },
+                  });
+                }
+              }}
+            >
               send Now
             </button>
           </div>
@@ -259,9 +325,14 @@ const PushNotification = () => {
                     setDialogOpen(true);
                   }}
                   onSend={() => {
-                    setDialogAction("send");
-                    setSelectedNotification(notification);
-                    setDialogOpen(true);
+                    navigate("/notification-details", {
+                      state: {
+                        message: notification.text,
+                        deeplink: deeplink,
+                        platforms: selectedPlatforms,
+                        image: image,
+                      },
+                    });
                   }}
                   onEdit={() => {
                     setEditIndex(index);
@@ -315,6 +386,8 @@ const PushNotification = () => {
                         )
                       );
                       setDialogOpen(false);
+                      // Show success dialog after deletion
+                      setSuccessDialogOpen(true);
                     }}
                     onCancel={() => setDialogOpen(false)}
                   />
@@ -323,8 +396,13 @@ const PushNotification = () => {
                     open={dialogOpen}
                     message={"Are you sure you want to send the notification"}
                     onConfirm={() => {
+                      const updatedNotifications = stackedNotifications.filter(
+                        (_, i) =>
+                          i !==
+                          stackedNotifications.indexOf(selectedNotification)
+                      );
+                      setStackedNotifications(updatedNotifications);
                       setDialogOpen(false);
-                      // Add your action logic here (send, edit, delete, info)
                     }}
                     onCancel={() => setDialogOpen(false)}
                   />
@@ -332,6 +410,21 @@ const PushNotification = () => {
               </div>
             )}
           </div>
+          {successDialogOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ boxShadow: "0 0 0 100vmax rgba(0,0,0,0.12)" }}
+              />
+              <ConfirmationDialogue
+                type="success"
+                message="Notification deleted successfully"
+                onDone={() => {
+                  setSuccessDialogOpen(false);
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Right Column - Preview */}
@@ -342,7 +435,7 @@ const PushNotification = () => {
             </h3>
             {/* Info button navigates to preview page */}
             <button
-              className="bg-black rounded-full flex items-center justify-center"
+              className="bg-black rounded-full flex items-center justify-center cursor-pointer"
               onClick={() =>
                 navigate("/notification-preview", { state: { image } })
               }

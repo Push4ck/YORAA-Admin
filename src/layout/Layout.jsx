@@ -1,9 +1,9 @@
-// Layout component provides the main dashboard structure with navbar, sidebar, and fixed-width content area
-// Usage: Wrap your routes/pages with <Layout> for consistent UI
-// - Navbar/Header at the top
-// - Sidebar below navbar
-// - Main content area uses React Router Outlet for dynamic page rendering
-import { Outlet } from "react-router-dom";
+/* Layout component provides the main dashboard structure with navbar, sidebar, and fixed-width content area
+Usage: Wrap your routes/pages with <Layout> for consistent UI
+Navbar/Header at the top
+Sidebar below navbar
+Main content area uses React Router Outlet for dynamic page rendering */
+import { Link, Outlet } from "react-router-dom";
 import sidebarItems from "../data/sidebarItems";
 
 const Layout = () => {
@@ -13,9 +13,12 @@ const Layout = () => {
       <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+            <Link
+              to="/"
+              className="text-xl sm:text-2xl font-bold text-gray-900"
+            >
               YORAA
-            </h1>
+            </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <img src="/assets/navbarLinks/message.svg" alt="" />

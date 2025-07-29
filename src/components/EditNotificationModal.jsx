@@ -28,12 +28,12 @@ const EditNotificationModal = ({
       onChange={onChange}
       className="border border-gray-300 rounded-xl px-4 py-3 w-full mb-8 text-base font-medium"
       placeholder={original}
-      // EditNotificationModal component displays a modal for editing notification text
-      // Props:
-      // - value: string, current notification text
-      // - onChange: function, called when input value changes
-      // - onSave: function, called when Save button is clicked
-      // - onCancel: function, called when Cancel/Close button is clicked
+      /* EditNotificationModal component displays a modal for editing notification text
+      Props:
+      - value: string, current notification text
+      - onChange: function, called when input value changes
+      - onSave: function, called when Save button is clicked
+      - onCancel: function, called when Cancel/Close button is clicked */
     />
     <div className="flex gap-4 w-full">
       <button
@@ -52,13 +52,13 @@ const EditNotificationModal = ({
   </div>
 );
 
-// EditNotificationModal component displays a modal for editing notification text
-// Props:
-// - value: string, current notification text
-// - onChange: function, called when input value changes
-// - onSave: function, called when Save button is clicked
-// - onCancel: function, called when Cancel/Close button is clicked
-// - original: string, original notification text for placeholder
-// Usage: <EditNotificationModal value={...} onChange={...} ... />
+/* EditNotificationModal component displays a modal for editing notification text
+Props:
+- value: string, current notification text
+- onChange: function, called when input value changes
+- onSave: function, called when Save button is clicked
+- onCancel: function, called when Cancel/Close button is clicked
+- original: string, original notification text for placeholder
+Usage: <EditNotificationModal value={...} onChange={...} ... /> */
 
 export default EditNotificationModal;

@@ -1,6 +1,6 @@
-// NotificationPreview page displays the uploaded notification image in full view
-// Uses React Router location state to receive image data
-// Usage: Navigate to this page with image in location.state
+/* NotificationPreview page displays the uploaded notification image in full view
+Uses React Router location state to receive image data
+Usage: Navigate to this page with image in location.state */
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
@@ -15,7 +15,7 @@ const NotificationPreview = () => {
     <div className="flex flex-col items-center justify-center min-h-screen relative">
       {/* Back icon at top right of content area */}
       <button
-        className="absolute top-6 right-8 bg-black text-white p-2 rounded-full flex items-center justify-center hover:bg-gray-800"
+        className="absolute top-6 right-8 bg-black text-white p-2 rounded-full flex items-center justify-center hover:bg-gray-800 cursor-pointer"
         onClick={() => navigate(-1)}
         title="Back"
       >
